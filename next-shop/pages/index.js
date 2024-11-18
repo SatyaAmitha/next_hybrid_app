@@ -1,21 +1,22 @@
-// pages/index-1.js
+// pages/index-2.js
 
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import Title from '../components/Title';
 import { getProducts } from '../lib/products';
 
-export async function getStaticProps() {
-  console.log('[HomePage] getStaticProps()');
-  const products = await getProducts();
-  return { props: { products } };
-}
+function HomePage() {
+  const [products, setProducts] = useState([]);
+  
+  useEffect(() => {
+    getProducts().then(setProducts);
+  }, []);
 
-function HomePage({ products }) {
   console.log('[HomePage] render:', products);
   return (
     <>
       <Head>
-        <title>Next Shop</title>
+        <title>Next Shop - Client Side</title>
       </Head>
       <main className="px-6 py-4">
         <Title>Next Shop</Title>
