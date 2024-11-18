@@ -1,14 +1,16 @@
-// pages/index.js
+// pages/index-1.js
 
 import Head from 'next/head';
 import Title from '../components/Title';
+import { getProducts } from '../lib/products';
 
-const products = [
-  { id: 1, title: 'First Product' },
-  { id: 2, title: 'Second Product' },
-];
+export async function getStaticProps() {
+  console.log('[HomePage] getStaticProps()');
+  const products = await getProducts();
+  return { props: { products } };
+}
 
-function HomePage() {
+function HomePage({ products }) {
   console.log('[HomePage] render:', products);
   return (
     <>
