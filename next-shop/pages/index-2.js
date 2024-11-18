@@ -1,19 +1,22 @@
-// pages/index.js
+// pages/index-2.js
 
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import Title from '../components/Title';
-
-const products = [
-  { id: 1, title: 'First Product' },
-  { id: 2, title: 'Second Product' },
-];
+import { getProducts } from '../lib/products';
 
 function HomePage() {
+  const [products, setProducts] = useState([]);
+  
+  useEffect(() => {
+    getProducts().then(setProducts);
+  }, []);
+
   console.log('[HomePage] render:', products);
   return (
     <>
       <Head>
-        <title>Next Shop</title>
+        <title>Next Shop - Client Side</title>
       </Head>
       <main className="px-6 py-4">
         <Title>Next Shop</Title>
