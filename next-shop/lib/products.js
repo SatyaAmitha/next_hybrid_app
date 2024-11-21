@@ -20,5 +20,6 @@ function stripProduct(product) {
     title: product.title,
     description: product.description,
     price: '$' + product.price.toFixed(2),
+    pictureUrl: CMS_URL + product.picture.url,
   };
 }
