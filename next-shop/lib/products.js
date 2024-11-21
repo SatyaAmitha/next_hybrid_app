@@ -9,6 +9,9 @@ function stripProduct(product) {
 }
 export async function getProduct(id) {
   const response = await fetch(`http://localhost:1337/products/${id}`);
+  if (!response.ok) {
+    throw new Error(`request failed: ${response.status}`);
+  }
   const product = await response.json();
   return stripProduct(product);
 }
