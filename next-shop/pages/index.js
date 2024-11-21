@@ -10,7 +10,7 @@ export async function getStaticProps() {
   const products = await getProducts();
   return {
     props: { products },
-    revalidate: 30, // revalidate every 5 minutes
+    revalidate: parseInt(process.env.REVALIDATE_SECONDS), // revalidate every 5 minutes
   };
 }
 
