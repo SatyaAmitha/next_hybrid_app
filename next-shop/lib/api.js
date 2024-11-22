@@ -18,3 +18,8 @@ export async function fetchJson(url,options) {
   }
   return await response.json();
 }
+export const sleep = (milliseconds) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
+
+// Usage: await sleep(2000);
