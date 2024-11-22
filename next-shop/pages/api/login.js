@@ -1,19 +1,31 @@
 // pages/api/login.js
 
-function handleLogin(req, res) {
+import { fetchJson } from '../../lib/api';
+
+async function handleLogin(req, res) {
   if (req.method !== 'POST') {
     res.status(405).end(); // Method Not Allowed
     return;
   }
 
-  console.log('req.body:', req.body);
-  // Here you would normally authenticate the user and get the JWT
-  const token = 'your-jwt-token'; // Placeholder for the actual token
+  const { email, password } = req.body;
 
-  // Set the cookie with the token
-  res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/`);
+  try {
+    const { jwt, user } = await fetchJson('http://localhost:1337/auth/local', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: email, password }),
+    });
 
-  res.status(200).json({ message: 'Logged in successfully' });
+    // TODO: Set jwt cookie
+
+    res.status(200).json({
+      id: user.id,
+      name: user.username,
+    });
+  } catch (err) {
+    res.status(401).end(); // Unauthorized
+  }
 }
 
 export default handleLogin;
