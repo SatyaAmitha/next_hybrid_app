@@ -1,6 +1,7 @@
 // components/Page.js
 
 import Head from 'next/head';
+import NavBar from './NavBar';
 import Title from './Title';
 
 function Page({ title, children }) {
@@ -9,6 +10,9 @@ function Page({ title, children }) {
       <Head>
         <title>{`${title} - Next Shop`}</title>
       </Head>
+      <header>
+        <NavBar />
+      </header>
       <main className="px-6 py-4">
         <Title>{title}</Title>
         {children}
