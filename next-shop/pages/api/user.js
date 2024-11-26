@@ -1,28 +1,43 @@
 // pages/api/user.js
-
 import { fetchJson } from '../../lib/api';
 
 const { CMS_URL } = process.env;
 
-async function handleUser(req, res) {
-  const { jwt } = req.cookies; // Extract JWT from cookies
+export default async function handler(req, res) {
+  // Check for JWT cookie
+  const jwt = req.cookies.jwt;
+
   if (!jwt) {
-    res.status(401).end(); // Return unauthorized if JWT is missing
+    res.status(401).json({ message: 'Not authenticated' });
     return;
   }
+
   try {
-    // Fetch user details from the CMS
-    const user = await fetchJson(`${CMS_URL}/users/me`, {
-      headers: { 'Authorization': `Bearer ${jwt}` },
+    // Validate the token with Strapi
+    const response = await fetch(`${CMS_URL}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`
+      }
     });
-    // Return user ID and name
+
+    if (!response.ok) {
+      // Token is invalid or expired
+      res.status(401).json({ message: 'Invalid authentication' });
+      return;
+    }
+
+    const user = await response.json();
+
+    // Return only necessary user information
     res.status(200).json({
       id: user.id,
       name: user.username,
+      email: user.email
     });
   } catch (err) {
-    res.status(401).end(); // Return unauthorized on error
+    console.error('User fetch error:', err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
-
-export default handleUser;
