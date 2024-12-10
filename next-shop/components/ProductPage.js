@@ -1,15 +1,22 @@
 // File: components/ProductPage.js
 
-import { useUser } from '../hooks/user';
+import React from 'react';
+import { addCartItem } from '../api/cart';
 
-function ProductPage() {
-  const user = useUser();
+function ProductPage({ product, token }) {
+  const handleAddToCart = async () => {
+    try {
+      await addCartItem(token, product.id, 1);
+      alert('Product added to cart!');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
 
   return (
     <div>
-      <h1>Product Name</h1>
-      <p>Price: $100</p>
-      {user && <p>Only for {user.name}!</p>}
+      <h1>{product.name}</h1>
+      <button onClick={handleAddToCart}>Add to Cart</button>
     </div>
   );
 }

@@ -23,6 +23,14 @@ function NavBar() {
             <Link href="/sign-in">Sign In</Link>
           </li>
         )}
+                {user && (
+          <>
+            <li>
+              <Link href="/cart">Cart</Link>
+            </li>
+          </>
+        )}
+        <li role="separator" className="flex-1" />
       </ul>
     </nav>
   );
