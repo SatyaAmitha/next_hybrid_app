@@ -1,24 +1,29 @@
 // File: components/NavBar.js
 
 import Link from 'next/link';
-import { useUser } from '../hooks/user';
-import { fetchJson } from '../lib/api';
+import { useSignOut, useUser } from '../hooks/user';
 
 function NavBar() {
   const user = useUser();
+  const signOut = useSignOut();
 
-  const handleSignOut = async () => {
-    await fetchJson('/api/logout');
-  };
-
+  console.log('[NavBar] user:', user);
   return (
     <nav>
-      {user ? (
-        <span>Signed in as {user.name}</span>
-      ) : (
-        <span>Not signed in</span>
-      )}
-      <button onClick={handleSignOut}>Sign out</button>
+      <ul>
+        {user ? (
+          <>
+            <li>Welcome, {user.name}</li>
+            <li>
+              <button onClick={signOut}>Sign Out</button>
+            </li>
+          </>
+        ) : (
+          <li>
+            <Link href="/sign-in">Sign In</Link>
+          </li>
+        )}
+      </ul>
     </nav>
   );
 }
